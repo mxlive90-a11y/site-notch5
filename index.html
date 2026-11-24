@@ -1,352 +1,785 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
-<head><link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Notch5 Studio Criativo & Procabos Elétrica | Loja</title>
-<meta name="description" content="Canecas sublimadas, placas em MDF, aromatizadores e extensões elétricas com QR code. Pague via Pix ou InfinitePay." />
-<style>
-  :root{
-    --bg:#F5F5F4; --surface:#FFFFFF; --ink:#18181B; --muted:#71717A;
-    --accent:#E2582B; --whats:#1FA855; --pix:#0F8B7E; --line:#E4E4E7;
-  }
-  *{box-sizing:border-box;margin:0;padding:0}
-  html{scroll-behavior:smooth;scroll-padding-top:76px}
-  body{font-family:"Geist",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5}
-  a{color:inherit;text-decoration:none}
-  img{display:block;max-width:100%}
-  .wrap{max-width:1200px;margin:0 auto;padding:0 16px}
-  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NOTCH5 STUDIO CRIATIVO — Vitrine</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; background: #f4f4f4; color: #222; }
+    header { background: #111; color: #fff; padding: 30px 20px; text-align: center; position: relative; }
+    .btn-carrinho-topo { position: fixed; top: 16px; right: 16px; z-index: 900; background: #0a7; color: #fff; border: none; padding: 11px 16px; border-radius: 8px; font-weight: bold; font-size: 14px; cursor: pointer; box-shadow: 0 3px 10px rgba(0,0,0,0.25); }
 
-  /* Topo com busca */
-  header{position:sticky;top:0;z-index:20;background:var(--surface);border-bottom:1px solid var(--line)}
-  .nav{display:flex;align-items:center;gap:16px;height:64px}
-  .logo{font-weight:800;font-size:18px;letter-spacing:-.02em;white-space:nowrap}
-  .logo span{color:var(--muted);font-weight:500}
-  .search{flex:1;position:relative;max-width:640px;margin-left:auto}
-  .search input{width:100%;height:42px;border:1px solid var(--line);background:var(--bg);border-radius:999px;padding:0 16px 0 42px;font:inherit;font-size:14px;color:var(--ink)}
-  .search input:focus{outline:none;border-color:var(--ink);background:var(--surface)}
-  .search svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:18px;height:18px;color:var(--muted);pointer-events:none}
-  @media(max-width:560px){
-    .nav{flex-wrap:wrap;height:auto;padding:10px 0;gap:10px}
-    .search{flex-basis:100%;max-width:none}
-    html{scroll-padding-top:120px}
-  }
+    /* Barra de CEP em destaque */
+    .barra-cep-topo { background: #0033c6; color: #fff; padding: 10px 16px; box-shadow: 0 2px 6px rgba(0,0,0,0.12); }
+    .barra-cep-interna { max-width: 960px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; }
+    .cep-chamada { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+    .cep-chamada strong { font-size: 14px; }
+    .cep-form-topo { display: flex; align-items: center; gap: 6px; }
+    .cep-form-topo input { padding: 7px 11px; border: none; border-radius: 6px; font-size: 14px; width: 155px; outline: none; }
+    .cep-form-topo button { background: #e11d48; color: #fff; border: none; padding: 7px 14px; border-radius: 6px; font-weight: bold; font-size: 13px; cursor: pointer; text-transform: uppercase; }
+    .cep-form-topo button:hover { background: #be123c; }
+    .cep-resultado-topo { font-size: 13px; color: #dbeafe; width: 100%; }
 
-  /* Atalhos redondos */
-  .cats{display:flex;gap:16px;overflow-x:auto;padding:20px 0 8px;scrollbar-width:none}
-  .cats::-webkit-scrollbar{display:none}
-  .cat{display:flex;flex-direction:column;align-items:center;gap:8px;background:none;border:0;cursor:pointer;font:inherit;color:var(--ink);flex-shrink:0;width:76px}
-  .cat-circle{width:68px;height:68px;border-radius:50%;overflow:hidden;background:var(--surface);border:2px solid var(--line);display:grid;place-items:center;transition:border-color .15s}
-  .cat-circle img{width:100%;height:100%;object-fit:cover}
-  .cat-circle.all{background:var(--ink);color:#fff;font-weight:800;font-size:13px}
-  .cat span{font-size:12px;font-weight:600;text-align:center;line-height:1.2}
-  .cat[aria-pressed="true"] .cat-circle{border-color:var(--accent)}
-  .cat:focus-visible{outline:3px solid var(--accent);outline-offset:4px;border-radius:12px}
+    main { max-width: 960px; margin: 28px auto; padding: 0 16px; }
+    h2 { margin: 0 0 16px; }
 
-  /* Banners horizontais */
-  .banners{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:12px 0;scrollbar-width:none}
-  .banners::-webkit-scrollbar{display:none}
-  .banner{scroll-snap-align:start;flex:0 0 88%;display:flex;align-items:center;justify-content:space-between;gap:12px;border-radius:16px;overflow:hidden;min-height:140px;padding:20px;color:#fff}
-  @media(min-width:768px){.banner{flex-basis:calc(50% - 6px)}}
-  .banner div{display:flex;flex-direction:column;gap:6px;align-items:flex-start}
-  .banner small{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;opacity:.85}
-  .banner strong{font-size:22px;line-height:1.15;letter-spacing:-.02em}
-  .banner .cta{margin-top:6px;background:#fff;color:var(--ink);font-size:13px;font-weight:700;padding:7px 14px;border-radius:999px}
-  .banner img{width:110px;height:110px;object-fit:cover;border-radius:12px;flex-shrink:0}
-  .b-orange{background:var(--accent)}
-  .b-dark{background:var(--ink)}
-  .b-pix{background:var(--pix)}
-  .banner:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+    /* Slider */
+    .slider-wrapper { margin-bottom: 28px; }
+    .slider-viewport { position: relative; width: 100%; overflow: hidden; border-radius: 12px; }
+    .slider-trilho { display: flex; width: 100%; transition: transform 0.45s ease; }
+    .slide { flex: 0 0 100%; width: 100%; box-sizing: border-box; height: 230px; border-radius: 12px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: space-between; padding: 24px 32px; color: #fff; }
+    .slide img.bg-slide { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.22; z-index: 0; }
+    .slide-conteudo { position: relative; z-index: 2; max-width: 62%; text-align: left; }
+    .slide-tag { display: inline-block; background: #fff; color: #111; font-weight: 900; font-size: 12px; padding: 4px 10px; border-radius: 4px; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px; }
+    .slide-conteudo h3 { margin: 0 0 8px; font-size: 28px; font-weight: 900; line-height: 1.15; text-transform: uppercase; }
+    .slide-conteudo p { margin: 0 0 14px; font-size: 14px; color: #f0f0f0; }
+    .slide-btn { display: inline-block; background: #e11d48; color: #fff; border: none; padding: 9px 18px; border-radius: 20px; font-weight: bold; font-size: 13px; text-transform: uppercase; cursor: pointer; text-decoration: none; }
+    .slide-btn:hover { background: #be123c; }
+    .slide-destaque-img { position: relative; z-index: 2; flex-shrink: 0; width: 150px; height: 150px; border-radius: 12px; object-fit: cover; box-shadow: 0 6px 16px rgba(0,0,0,0.35); background: rgba(255,255,255,0.12); }
 
-  /* Seções */
-  section{padding:20px 0}
-  .sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:12px}
-  h2{font-size:20px;letter-spacing:-.02em}
-  .sec-head p{font-size:13px;color:var(--muted)}
+    .slider-seta { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.45); color: #fff; border: none; width: 34px; height: 34px; border-radius: 50%; font-size: 16px; cursor: pointer; z-index: 10; }
+    .slider-seta:hover { background: rgba(0,0,0,0.75); }
+    .slider-seta.ant { left: 10px; }
+    .slider-seta.prox { right: 10px; }
 
-  .grid{display:grid;gap:12px;grid-template-columns:repeat(2,1fr)}
-  @media(min-width:768px){.grid{grid-template-columns:repeat(3,1fr);gap:16px}}
-  @media(min-width:1024px){.grid{grid-template-columns:repeat(4,1fr)}}
-  .card{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
-  .card-img{position:relative;aspect-ratio:1/1;background:#EEE}
-  .card-img img{width:100%;height:100%;object-fit:cover}
-  .tag{position:absolute;top:8px;left:8px;background:var(--surface);font-size:11px;font-weight:700;padding:3px 8px;border-radius:999px}
-  .tag.qr{background:var(--accent);color:#fff}
-  .card-body{padding:12px;display:flex;flex-direction:column;gap:4px;flex:1}
-  .card-body h3{font-size:14px;font-weight:600;line-height:1.3}
-  .price{font-size:18px;font-weight:800;letter-spacing:-.02em}
-  .price small{font-size:12px;font-weight:500;color:var(--muted)}
-  .pix-note{font-size:12px;color:var(--pix);font-weight:600}
-  .actions{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:auto;padding-top:10px}
-  .text-link{font-size:12px;color:var(--muted);text-align:center;padding-top:6px;text-decoration:underline}
-  .empty{text-align:center;color:var(--muted);font-size:14px;padding:32px 0}
+    .slider-pontos { display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 12px; }
+    .ponto { width: 10px; height: 10px; border-radius: 50%; background: #d1d5db; border: none; cursor: pointer; padding: 0; transition: all 0.25s ease; }
+    .ponto.ativo { width: 13px; height: 13px; background: #0033c6; }
 
-  .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border-radius:10px;padding:9px 6px;font-weight:600;font-size:13px;border:1px solid transparent;cursor:pointer;font-family:inherit;white-space:nowrap;transition:opacity .15s}
-  .btn:hover{opacity:.9}
-  .btn:focus-visible,.text-link:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
-  .btn svg{width:16px;height:16px;flex-shrink:0}
-  .btn-pix{background:var(--pix);color:#fff}
-  .btn-whats{background:var(--whats);color:#fff}
-  .btn-dark{background:var(--ink);color:#fff;padding:10px 14px;font-size:14px}
+    @media (max-width: 600px) {
+      .slide { height: 200px; padding: 18px 20px; }
+      .slide-conteudo { max-width: 65%; }
+      .slide-conteudo h3 { font-size: 20px; }
+      .slide-destaque-img { width: 105px; height: 105px; }
+    }
 
-  footer{background:var(--surface);border-top:1px solid var(--line);padding:24px 0 96px;margin-top:24px}
-  footer .wrap{display:flex;flex-direction:column;gap:16px}
-  .foot-bar{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px}
-  footer p{font-size:13px;color:var(--muted)}
-  footer summary{list-style:none;cursor:pointer}
-  footer summary::-webkit-details-marker{display:none}
-  footer summary:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
-  .more summary{display:inline-flex;align-items:center;gap:8px}
-  .more summary svg{width:16px;height:16px;transition:transform .2s}
-  .more[open] summary svg{transform:rotate(180deg)}
-  .more-panel{display:grid;gap:24px;grid-template-columns:1fr;padding:20px 0 4px;margin-top:16px;border-top:1px solid var(--line)}
-  @media(min-width:768px){.more-panel{grid-template-columns:repeat(3,1fr)}}
-  .more-panel h3{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:10px}
-  .more-panel ul{list-style:none;display:flex;flex-direction:column;gap:8px}
-  .more-panel li,.more-panel a,.more-panel .about summary{font-size:14px;color:var(--ink)}
-  .more-panel a:hover,.more-panel .about summary:hover{text-decoration:underline}
-  .more-panel a:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:4px}
-  .about summary{font-weight:600}
-  footer .about-text{margin-top:8px;max-width:360px;font-size:14px;line-height:1.6;color:var(--ink);background:var(--bg);border-radius:10px;padding:12px}
-  .pay-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:8px;vertical-align:middle}
+    /* Vitrine com 8 produtos e botão Comprar dentro de cada card */
+    .vitrine { display: grid; grid-template-columns: repeat(auto-fit, minmax(215px, 1fr)); gap: 18px; }
+    .produto { background: #fff; border-radius: 10px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); display: flex; flex-direction: column; justify-content: space-between; }
+    .produto-img-box { width: 100%; height: 155px; border-radius: 8px; background: #e9e9e9; overflow: hidden; margin-bottom: 12px; display: flex; align-items: center; justify-content: center; color: #666; font-size: 13px; font-weight: bold; }
+    .produto-img-box img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .produto h3 { margin: 0 0 8px; font-size: 17px; }
+    .produto p { margin: 0 0 12px; color: #555; font-size: 13.5px; line-height: 1.4; }
+    .preco { font-size: 19px; font-weight: bold; color: #0a7; margin-bottom: 12px; }
+    .btn-comprar { width: 100%; background: #111; color: #fff; border: none; padding: 11px 14px; border-radius: 6px; font-weight: bold; font-size: 15px; cursor: pointer; }
+    .btn-comprar:hover { background: #0a7; }
 
-  .fab{position:fixed;right:16px;bottom:16px;z-index:30;width:56px;height:56px;border-radius:50%;background:var(--whats);color:#fff;display:grid;place-items:center;box-shadow:0 8px 24px rgba(31,168,85,.4)}
-  .fab svg{width:28px;height:28px}
-  .fab:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
-  .toast{position:fixed;left:50%;bottom:86px;transform:translateX(-50%);background:var(--ink);color:#fff;font-size:14px;font-weight:600;padding:10px 16px;border-radius:999px;z-index:40;opacity:0;pointer-events:none;transition:opacity .2s;max-width:90vw;text-align:center}
-  .toast.show{opacity:1}
-</style>
+    /* Sanfona Mais / Menos Informações */
+    .info-sanfona-box { margin-top: 32px; background: #fff; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); overflow: hidden; }
+    .info-conteudo-expansivel { display: none; padding: 22px 20px 14px; border-bottom: 1px solid #e5e7eb; }
+    .info-conteudo-expansivel.aberto { display: block; }
+    .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; }
+    .info-coluna h3 { margin: 0 0 8px; font-size: 16px; color: #0033c6; text-transform: uppercase; }
+    .info-coluna p { margin: 0 0 10px; font-size: 14px; line-height: 1.6; color: #444; }
+    .info-coluna p:last-child { margin-bottom: 0; }
+    .quem-somos-resto, .entrega-resto { display: none; }
+    .quem-somos-resto.aberto, .entrega-resto.aberto { display: inline; }
+    .btn-ler-mais-texto { background: #111; color: #fff; border: none; border-radius: 6px; font-weight: bold; font-size: 13px; padding: 7px 14px; margin-top: 8px; cursor: pointer; display: inline-block; }
+    .btn-ler-mais-texto:hover { background: #0033c6; }
+    .info-toggle-area { text-align: center; padding: 14px; background: #fff; }
+    .btn-info-toggle { background: #fff; color: #0033c6; border: 1px solid #cbd5e1; padding: 11px 24px; border-radius: 8px; font-weight: bold; font-size: 14px; text-transform: uppercase; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
+    .btn-info-toggle:hover { background: #f8fafc; }
+
+    /* Rodapé rotativo */
+    footer { background: #222; color: #ccc; text-align: center; padding: 20px; margin-top: 40px; font-size: 14px; min-height: 24px; }
+    .rodape-slide { display: none; margin: 0; }
+    .rodape-slide.ativo { display: block; }
+
+    /* Janela / Aba de Compra centralizada no meio da tela */
+    .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.65); z-index: 1000; justify-content: center; align-items: center; padding: 16px; }
+    .overlay.ativo { display: flex; }
+    .painel-carrinho { background: #fff; width: 100%; max-width: 540px; max-height: 90vh; overflow-y: auto; padding: 22px; border-radius: 12px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 12px 32px rgba(0,0,0,0.35); }
+    .topo-carrinho { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ddd; padding-bottom: 12px; margin-bottom: 14px; }
+    .topo-carrinho h2 { margin: 0; font-size: 20px; }
+    .btn-fechar { background: #eee; border: none; font-size: 18px; font-weight: bold; width: 34px; height: 34px; border-radius: 6px; cursor: pointer; }
+    .item-carrinho { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding: 10px 0; gap: 10px; }
+    .item-info { flex: 1; font-size: 14px; }
+    .item-info strong { display: block; margin-bottom: 3px; }
+    .qtd-controles { display: flex; align-items: center; gap: 6px; }
+    .qtd-controles button { width: 26px; height: 26px; border: 1px solid #ccc; background: #f9f9f9; border-radius: 4px; cursor: pointer; font-weight: bold; }
+    .bloco-checkout { background: #f8f8f8; border: 1px solid #e2e2e2; border-radius: 8px; padding: 14px; margin-top: 14px; }
+    .bloco-checkout h3 { margin: 0 0 10px; font-size: 15px; }
+    .campo { width: 100%; padding: 9px 10px; margin-bottom: 8px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; box-sizing: border-box; font-family: Arial, sans-serif; }
+    textarea.campo { resize: vertical; min-height: 76px; margin-bottom: 0; }
+    .linha-cep { display: flex; gap: 8px; margin-bottom: 8px; }
+    .linha-cep input { flex: 1; margin-bottom: 0; }
+    .btn-cep { background: #111; color: #fff; border: none; padding: 0 14px; border-radius: 6px; font-weight: bold; cursor: pointer; }
+    .resumo-valores { border-top: 1px solid #ddd; margin-top: 14px; padding-top: 12px; font-size: 15px; }
+    .resumo-linha { display: flex; justify-content: space-between; margin-bottom: 6px; }
+    .resumo-total { display: flex; justify-content: space-between; font-size: 18px; font-weight: bold; color: #0a7; margin-top: 8px; }
+
+    /* Botões de pagamento no final */
+    .grupo-pagamentos { display: flex; flex-direction: column; gap: 10px; margin-top: 14px; }
+    .btn-pag-cartao { width: 100%; background: #009ee3; color: #fff; border: none; padding: 13px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; }
+    .btn-pag-cartao:hover { background: #007eb5; }
+    .btn-pag-pix { width: 100%; background: #111827; color: #fff; border: none; padding: 13px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; }
+    .btn-pag-pix:hover { background: #0a7; }
+
+    .box-pix { display: none; background: #f0fdf4; border: 1px solid #16a34a; border-radius: 8px; padding: 12px; margin-top: 12px; font-size: 13.5px; color: #14532d; }
+    .box-pix.ativo { display: block; }
+    .codigo-pix-box { background: #fff; border: 1px dashed #16a34a; border-radius: 6px; padding: 8px; margin: 8px 0; font-family: monospace; font-size: 12.5px; word-break: break-all; color: #111; }
+    .btn-copiar-pix { background: #16a34a; color: #fff; border: none; border-radius: 6px; padding: 8px 12px; font-weight: bold; font-size: 13px; cursor: pointer; width: 100%; margin-bottom: 8px; }
+    .btn-avisar-pix { background: #0a7; color: #fff; border: none; border-radius: 6px; padding: 9px 12px; font-weight: bold; font-size: 13px; cursor: pointer; width: 100%; }
+    .aviso-pix-nota { font-size: 12px; color: #166534; margin-top: 8px; line-height: 1.4; }
+    .box-retorno { background: #ecfdf5; border: 1px solid #10b981; color: #065f46; border-radius: 8px; padding: 12px; margin-top: 12px; font-size: 13.5px; line-height: 1.5; white-space: pre-line; }
+  </style>
 </head>
 <body>
+  <button class="btn-carrinho-topo" type="button" onclick="abrirCarrinho()">Carrinho (<span id="contador-carrinho">0</span>)</button>
 
-<header>
-  <div class="wrap nav">
-    <a class="logo" href="#topo">Notch5 <span>+ Procabos</span></a>
-    <form class="search" role="search" onsubmit="return false">
-      <label for="q" class="sr-only">Buscar produtos</label>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-      <input id="q" type="search" placeholder="Buscar canecas, MDF, extensões..." autocomplete="off" />
-    </form>
-  </div>
-</header>
+  <header>
+    <h1>NOTCH5 STUDIO CRIATIVO</h1>
+    <p>SUBLIMAÇÃO - PERSONALIZAÇÃO - ELÉTRICA - TURISMO</p>
+  </header>
 
-<main id="topo">
-  <div class="wrap">
-    <nav class="cats" aria-label="Categorias">
-      <button class="cat" data-filter="all" aria-pressed="true"><span class="cat-circle all">Tudo</span><span>Todos</span></button>
-      <button class="cat" data-filter="caneca" aria-pressed="false"><span class="cat-circle"><img src="./img/caneca.png" alt="" /></span><span>Canecas</span></button>
-      <button class="cat" data-filter="placa" aria-pressed="false"><span class="cat-circle"><img src="./img/placa.png" alt="" /></span><span>Placas MDF</span></button>
-      <button class="cat" data-filter="aroma" aria-pressed="false"><span class="cat-circle"><img src="./img/aromatizador.png" alt="" /></span><span>Aromas</span></button>
-      <button class="cat" data-filter="extensao" aria-pressed="false"><span class="cat-circle"><img src="./img/extensao.png" alt="" /></span><span>Extensões</span></button>
-    </nav>
-
-    <div class="banners" aria-label="Destaques">
-      <a class="banner b-orange" href="#notch5">
-        <div><small>Notch5 Studio Criativo</small><strong>Canecas com a sua estampa</strong><span class="cta">Ver canecas</span></div>
-        <img src="./img/caneca.png" alt="" />
-      </a>
-      <a class="banner b-dark" href="#procabos">
-        <div><small>Procabos Elétrica</small><strong>Extensões com QR code</strong><span class="cta">Ver extensões</span></div>
-        <img src="./img/extensao.png" alt="" />
-      </a>
-      <a class="banner b-pix" href="#notch5">
-        <div><small>Pagamento fácil</small><strong>Pix na hora ou cartão em até 12x</strong><span class="cta">Comprar agora</span></div>
-        <img src="./img/aromatizador.png" alt="" />
-      </a>
+  <div class="barra-cep-topo">
+    <div class="barra-cep-interna">
+      <div class="cep-chamada">
+        <span>&#128205;</span>
+        <span id="texto-cep-topo"><strong>Informe seu CEP</strong> para consultar prazo e entrega</span>
+      </div>
+      <div class="cep-form-topo">
+        <input type="text" id="cep-topo-input" maxlength="9" placeholder="00000-000" onkeydown="if(event.key==='Enter') consultarCepTopo()">
+        <button type="button" onclick="consultarCepTopo()">OK</button>
+      </div>
+      <div class="cep-resultado-topo" id="resultado-cep-topo" style="display:none;"></div>
     </div>
   </div>
 
-  <section id="notch5" aria-labelledby="notch5-title">
-    <div class="wrap">
-      <div class="sec-head">
-        <h2 id="notch5-title">Notch5 Studio Criativo</h2>
-        <p>Personalizados</p>
+  <main>
+    <h2>Produtos em Destaque</h2>
+
+    <div class="slider-wrapper">
+      <div class="slider-viewport">
+        <div class="slider-trilho" id="slider-trilho">
+
+          <div class="slide" style="background: linear-gradient(125deg, #091534 0%, #0f296b 65%, #1d4ed8 100%);">
+            <img class="bg-slide" src="banner-1.jpg" alt="" onerror="this.style.display='none'">
+            <div class="slide-conteudo">
+              <span class="slide-tag">Linha Personalizada</span>
+              <h3>Sublimação &amp; Brindes</h3>
+              <p>Arte exclusiva e acabamento profissional para você ou sua empresa.</p>
+              <a class="slide-btn" href="#vitrine-produtos">Confira</a>
+            </div>
+            <img class="slide-destaque-img" src="item-1.jpg" alt="Sublimação" onerror="this.style.display='none'">
+          </div>
+
+          <div class="slide" style="background: linear-gradient(125deg, #0b132b 0%, #1c2541 65%, #0a7 100%);">
+            <img class="bg-slide" src="banner-2.jpg" alt="" onerror="this.style.display='none'">
+            <div class="slide-conteudo">
+              <span class="slide-tag">Atendimento Rápido</span>
+              <h3>Serviços de Elétrica</h3>
+              <p>Instalações e manutenções residenciais e comerciais com segurança.</p>
+              <a class="slide-btn" href="#vitrine-produtos">Confira</a>
+            </div>
+            <img class="slide-destaque-img" src="item-2.jpg" alt="Elétrica" onerror="this.style.display='none'">
+          </div>
+
+          <div class="slide" style="background: linear-gradient(125deg, #111827 0%, #1e3a8a 65%, #e11d48 100%);">
+            <img class="bg-slide" src="banner-3.jpg" alt="" onerror="this.style.display='none'">
+            <div class="slide-conteudo">
+              <span class="slide-tag">Viagens &amp; Roteiros</span>
+              <h3>Turismo &amp; Excursões</h3>
+              <p>Pacotes organizados para você viajar com conforto e tranquilidade.</p>
+              <a class="slide-btn" href="#vitrine-produtos">Confira</a>
+            </div>
+            <img class="slide-destaque-img" src="item-3.jpg" alt="Turismo" onerror="this.style.display='none'">
+          </div>
+
+        </div>
+
+        <button class="slider-seta ant" type="button" onclick="mudarSlide(-1)">&#10094;</button>
+        <button class="slider-seta prox" type="button" onclick="mudarSlide(1)">&#10095;</button>
       </div>
-      <div class="grid" data-store="notch5"></div>
+
+      <div class="slider-pontos" id="slider-pontos">
+        <button class="ponto ativo" type="button" onclick="irParaSlide(0)"></button>
+        <button class="ponto" type="button" onclick="irParaSlide(1)"></button>
+        <button class="ponto" type="button" onclick="irParaSlide(2)"></button>
+      </div>
     </div>
-  </section>
 
-  <section id="procabos" aria-labelledby="procabos-title">
-    <div class="wrap">
-      <div class="sec-head">
-        <h2 id="procabos-title">Procabos Elétrica</h2>
-        <p>Extensões com QR code</p>
+    <!-- 8 produtos na vitrine com botão Comprar dentro de cada card -->
+    <div class="vitrine" id="vitrine-produtos">
+
+      <div class="produto">
+        <div>
+          <div class="produto-img-box"><span>Foto em breve</span></div>
+          <h3>Adesivo em Vinil Sublimático</h3>
+          <p>Acabamento resistente para personalização e kits.</p>
+        </div>
+        <div>
+          <div class="preco">R$ 15,00</div>
+          <button class="btn-comprar" type="button" onclick="adicionarAoCarrinho('Adesivo em Vinil Sublimático', 15.00)">Comprar</button>
+        </div>
       </div>
-      <div class="grid" data-store="procabos"></div>
+
+      <div class="produto">
+        <div>
+          <div class="produto-img-box"><span>Foto em breve</span></div>
+          <h3>Cartela de Adesivos</h3>
+          <p>Arte personalizada pronta para aplicação e divulgação.</p>
+        </div>
+        <div>
+          <div class="preco">R$ 25,00</div>
+          <button class="btn-comprar" type="button" onclick="adicionarAoCarrinho('Cartela de Adesivos', 25.00)">Comprar</button>
+        </div>
+      </div>
+
+      <div class="produto">
+        <div>
+          <div class="produto-img-box"><img src="item-1.jpg" alt="Produto 3" onerror="this.style.display='none'; this.parentNode.textContent='Sem foto'"></div>
+          <h3>Produto 3</h3>
+          <p>Descrição curta do produto 3.</p>
+        </div>
+        <div>
+          <div class="preco">R$ 0,00</div>
+          <button class="btn-comprar" type="button" onclick="adicionarAoCarrinho('Produto 3', 0.00)">Comprar</button>
+        </div>
+      </div>
+
+      <div class="produto">
+        <div>
+          <div class="produto-img-box"><img src="item-2.jpg" alt="Produto 4" onerror="this.style.display='none'; this.parentNode.textContent='Sem foto'"></div>
+          <h3>Produto 4</h3>
+          <p>Descrição curta do produto 4.</p>
+        </div>
+        <div>
+          <div class="preco">R$ 0,00</div>
+          <button class="btn-comprar" type="button" onclick="adicionarAoCarrinho('Produto 4', 0.00)">Comprar</button>
+        </div>
+      </div>
+
+      <div class="produto">
+        <div>
+          <div class="produto-img-box"><img src="item-3.jpg" alt="Produto 5" onerror="this.style.display='none'; this.parentNode.textContent='Sem foto'"></div>
+          <h3>Produto 5</h3>
+          <p>Descrição curta do produto 5.</p>
+        </div>
+        <div>
+          <div class="preco">R$ 0,00</div>
+          <button class="btn-comprar" type="button" onclick="adicionarAoCarrinho('Produto 5', 0.00)">Comprar</button>
+        </div>
+      </div>
+
+      <div class="produto">
+        <div>
+          <div class="produto-img-box"><img src="item-4.jpg" alt="Produto 6" onerror="this.style.display='none'; this.parentNode.textContent='Sem foto'"></div>
+          <h3>Produto 6</h3>
+          <p>Descrição curta do produto 6.</p>
+        </div>
+        <div>
+          <div class="preco">R$ 0,00</div>
+          <button class="btn-comprar" type="button" onclick="adicionarAoCarrinho('Produto 6', 0.00)">Comprar</button>
+        </div>
+      </div>
+
+      <div class="produto">
+        <div>
+          <div class="produto-img-box"><img src="item-5.jpg" alt="Produto 7" onerror="this.style.display='none'; this.parentNode.textContent='Sem foto'"></div>
+          <h3>Produto 7</h3>
+          <p>Descrição curta do produto 7.</p>
+        </div>
+        <div>
+          <div class="preco">R$ 0,00</div>
+          <button class="btn-comprar" type="button" onclick="adicionarAoCarrinho('Produto 7', 0.00)">Comprar</button>
+        </div>
+      </div>
+
+      <div class="produto">
+        <div>
+          <div class="produto-img-box"><img src="item-6.jpg" alt="Produto 8" onerror="this.style.display='none'; this.parentNode.textContent='Sem foto'"></div>
+          <h3>Produto 8</h3>
+          <p>Descrição curta do produto 8.</p>
+        </div>
+        <div>
+          <div class="preco">R$ 0,00</div>
+          <button class="btn-comprar" type="button" onclick="adicionarAoCarrinho('Produto 8', 0.00)">Comprar</button>
+        </div>
+      </div>
+
     </div>
-  </section>
 
-  <p class="empty wrap" id="empty" hidden>Nenhum produto encontrado.</p>
-  <p class="sr-only" id="results" aria-live="polite"></p>
-</main>
-
-<footer>
-  <div class="wrap">
-    <details class="more">
-      <summary class="btn btn-dark">Mais informações
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
-      </summary>
-      <div class="more-panel">
-        <div>
-          <h3>Links úteis</h3>
-          <ul>
-            <li>
-              <details class="about">
-                <summary>Quem somos</summary>
-                <p class="about-text">Nascemos do trabalho feito com as próprias mãos, da vivência prática na elétrica e do cuidado em cada detalhe personalizado — unindo a criatividade da Notch5 Studio Criativo, a firmeza das extensões da Procabos Elétrica e a união em família para entregar qualidade de verdade em cada pedido.</p>
-              </details>
-            </li>
-            <li><a href="#" data-wa="Olá! Gostaria de saber os prazos e locais de entrega.">Prazos e locais de entrega</a></li>
-            <li><a href="#" data-wa="Olá! Gostaria de saber sobre a política de troca e devolução.">Política de Troca e Devolução</a></li>
-            <li><a href="#" data-wa="Olá! Preciso de atendimento.">Atendimento</a></li>
-          </ul>
-        </div>
-        <div>
-          <h3>Formas de pagamento</h3>
-          <ul>
-            <li><span class="pay-dot" style="background:var(--pix)" aria-hidden="true"></span>Pix</li>
-            <li><span class="pay-dot" style="background:var(--accent)" aria-hidden="true"></span>Cartão via InfinitePay</li>
-          </ul>
-        </div>
-        <div>
-          <h3>Dados</h3>
-          <ul>
-            <li>Notch5 Studio Criativo & Procabos Elétrica — Diadema - SP</li>
-          </ul>
+    <div class="info-sanfona-box">
+      <div class="info-conteudo-expansivel" id="conteudo-mais-info">
+        <div class="info-grid">
+          <div class="info-coluna">
+            <h3>Quem Somos</h3>
+            <p>
+              A <strong>NOTCH5 STUDIO CRIATIVO</strong> nasceu da vontade de transformar trabalho duro, dedicação e criatividade em algo que marque as pessoas de verdade. Mais do que prestar serviços, cada entrega carrega o compromisso de quem faz acontecer com as próprias mãos
+              <span class="quem-somos-resto" id="quem-somos-resto">
+                — seja dando cor e identidade com <strong>sublimação</strong> e personalização, levando energia firme e segura com <strong>elétrica</strong>, <strong>geradores</strong> e <strong>eventos</strong>, ou ajudando alguém a realizar uma viagem e um momento especial. Por trás de cada detalhe existe um sonho maior: construir e consolidar um estúdio próprio para a <strong>NOTCH5</strong>, um espaço criativo e de estrutura onde todas essas frentes caminham juntas, crescendo passo a passo, com respeito a quem confia no nosso trabalho e orgulho de cada conquista alcançada ao longo do caminho.
+              </span>
+            </p>
+            <button class="btn-ler-mais-texto" id="btn-ler-mais-texto" type="button" onclick="alternarLeituraQuemSomos()">Ler mais</button>
+          </div>
+          <div class="info-coluna">
+            <h3>Entrega</h3>
+            <p>
+              O frete e o prazo são calculados pelo CEP no site com envio para todo o Brasil,
+              <span class="entrega-resto" id="entrega-resto">
+                somando o prazo de produção de 3 a 5 dias úteis para itens personalizados ao prazo da entrega/transporte. Você também pode escolher retirada no local (Grátis) e alinhar a confirmação depois pelo WhatsApp.
+              </span>
+            </p>
+            <button class="btn-ler-mais-texto" id="btn-ler-mais-entrega" type="button" onclick="alternarLeituraEntrega()">Leia mais</button>
+          </div>
+          <div class="info-coluna">
+            <h3>Política de Privacidade</h3>
+            <p>Os dados informados no pedido são utilizados exclusivamente para orçamento, produção, pagamento e entrega dos pedidos, sem compartilhamento com terceiros.</p>
+          </div>
         </div>
       </div>
-    </details>
-    <div class="foot-bar">
-      <p>© 2026 Notch5 Studio Criativo & Procabos Elétrica</p>
+      <div class="info-toggle-area">
+        <button class="btn-info-toggle" id="btn-mais-info" type="button" onclick="alternarMaisInformacoes()">MAIS INFORMAÇÕES &#709;</button>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p class="rodape-slide ativo">NOTCH5 STUDIO CRIATIVO — Todos os direitos reservados</p>
+    <p class="rodape-slide">SUBLIMAÇÃO • PERSONALIZAÇÃO • ELÉTRICA • TURISMO</p>
+    <p class="rodape-slide">Pagamento via Cartão de Crédito e Pix</p>
+  </footer>
+
+  <!-- Aba / Janela de Compra centralizada -->
+  <div class="overlay" id="overlay-carrinho">
+    <div class="painel-carrinho">
+      <div>
+        <div class="topo-carrinho">
+          <h2 id="titulo-aba-compra">Comprar</h2>
+          <button class="btn-fechar" type="button" onclick="fecharCarrinho()">✕</button>
+        </div>
+
+        <div id="formulario-checkout">
+          <div id="lista-itens-carrinho"></div>
+
+          <div class="bloco-checkout">
+            <h3>1. Entrega e Frete</h3>
+            <select class="campo" id="tipo-entrega" onchange="atualizarResumo()">
+              <option value="Retirada no local">Retirada no local (Grátis)</option>
+              <option value="Entrega / Envio">Entrega / Envio pelo CEP</option>
+            </select>
+            <div class="linha-cep">
+              <input class="campo" type="text" id="cep-cliente" maxlength="9" placeholder="Digite seu CEP (ex: 09900-000)">
+              <button class="btn-cep" type="button" onclick="consultarCep()">Calcular</button>
+            </div>
+            <div id="status-cep" style="font-size:13px; color:#555; margin-bottom:6px;"></div>
+            <input class="campo" type="text" id="endereco-cliente" placeholder="Rua, número, bairro e cidade">
+          </div>
+
+          <div class="bloco-checkout">
+            <h3>2. Seus Dados e Detalhes</h3>
+            <input class="campo" type="text" id="nome-cliente" placeholder="Seu nome completo">
+            <input class="campo" type="tel" id="whats-cliente" placeholder="Seu WhatsApp com DDD">
+            <textarea class="campo" id="detalhes-cliente" placeholder="Detalhes do pedido (medida, arte/adesivo, cor, quantidade ou observação)"></textarea>
+          </div>
+        </div>
+
+        <div class="box-pix" id="box-pix-pagamento">
+          <strong>Pagamento via Pix</strong>
+          <div id="info-pix-valor"></div>
+          <div class="codigo-pix-box" id="codigo-pix-copia-cola"></div>
+          <button class="btn-copiar-pix" type="button" onclick="copiarPix()">Copiar Chave / Código Pix</button>
+          <button class="btn-avisar-pix" type="button" onclick="enviarPedidoPix()">Já fiz o Pix — Enviar Pedido</button>
+          <div class="aviso-pix-nota">Após o cliente pagar no banco dele, você confere o recebimento no seu app/extrato.</div>
+        </div>
+
+        <div class="box-retorno" id="box-retorno-pagamento" style="display:none;"></div>
+      </div>
+
+      <div id="rodape-checkout">
+        <div class="resumo-valores">
+          <div class="resumo-linha"><span>Subtotal:</span><span id="valor-subtotal">R$ 0,00</span></div>
+          <div class="resumo-linha"><span>Entrega:</span><span id="valor-frete">Grátis</span></div>
+          <div class="resumo-total"><span>Total:</span><span id="valor-total">R$ 0,00</span></div>
+        </div>
+
+        <!-- Opções de pagamento direto na vitrine -->
+        <div class="grupo-pagamentos">
+          <button class="btn-pag-cartao" type="button" onclick="pagarComCartaoCredito()">Pagar com Cartão de Crédito</button>
+          <button class="btn-pag-pix" type="button" onclick="pagarComPix()">Pagar com Pix</button>
+        </div>
+      </div>
     </div>
   </div>
-</footer>
 
-<a class="fab" data-wa="Olá! Vim pelo site." href="#" aria-label="Falar no WhatsApp">
-  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.3 14.2c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.5-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .5l-.3.5-.4.5c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.7-.1l.9-1.1c.2-.3.4-.2.7-.1l2 1c.3.1.5.2.5.3.1.2.1.7-.1 1.3Z"/></svg>
-</a>
-<div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script>
+    // Links e dados de pagamento
+    var LINK_CARTAO_MERCADO_PAGO = "https://link.mercadopago.com.br/andersonalvesdarocha";
+    var CHAVE_PIX_LOJA = "11971416225";
+    var NOME_RECEBEDOR_PIX = "Anderson Alves da Rocha";
+    var WHATSAPP_LOJA = ""; // Opcional: coloque seu numero com DDD, ex: "5511999999999"
 
-<script type="module">
-  // Substitua pelos dados reais:
-  const WHATSAPP = "5511999999999";
-  const INFINITEPAY = "https://loja.infinitepay.io/notch5";
-  const PIX_KEY = "contato@notch5.com.br";
-  const PIX_NAME = "NOTCH5 STUDIO CRIATIVO";
-  const PIX_CITY = "SAO PAULO";
+    var slideAtual = 0;
+    var trilho = document.getElementById("slider-trilho");
+    var totalSlides = document.querySelectorAll(".slide").length;
+    var pontos = document.querySelectorAll(".ponto");
 
-  const wa = (msg) => `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`;
-  const brl = (v) => v.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
-  const $ = (id) => document.getElementById(id);
-  const norm = (s) => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+    function mostrarSlide(indice) {
+      if (indice >= totalSlides) slideAtual = 0;
+      else if (indice < 0) slideAtual = totalSlides - 1;
+      else slideAtual = indice;
 
-  const products = [
-    { store:"notch5", cat:"caneca", label:"Caneca", name:"Caneca sublimada 325 ml", price:30000, img:"caneca.png", alt:"Caneca branca com estampa floral colorida" },
-    { store:"notch5", cat:"caneca", label:"Caneca", name:"Kit casal — 2 canecas", price:74.90, img:"caneca.png", alt:"Caneca branca personalizada" },
-    { store:"notch5", cat:"placa", label:"MDF", name:"Placa decorativa em MDF", price:49.90, from:true, img:"placa.png", alt:"Placa de MDF com letras gravadas" },
-    { store:"notch5", cat:"placa", label:"MDF", name:"Porta-chaves em MDF", price:44.90, img:"placa.png", alt:"Peça em MDF gravada a laser" },
-    { store:"notch5", cat:"aroma", label:"Aroma", name:"Aromatizador de varetas", price:34.90, img:"aromatizador.png", alt:"Frasco de aromatizador com varetas de madeira" },
-    { store:"notch5", cat:"aroma", label:"Aroma", name:"Kit lembrancinha 10 un. aromatizador", price:249.90, img:"aromatizador.png", alt:"Aromatizador com rótulo personalizado" },
-    { store:"procabos", cat:"extensao", label:"QR code", qr:true, name:"Extensão elétrica 5 m", price:59.90, img:"extensao.png", alt:"Extensão elétrica laranja com régua de tomadas" },
-    { store:"procabos", cat:"extensao", label:"QR code", qr:true, name:"Extensão elétrica 10 m", price:89.90, img:"extensao.png", alt:"Extensão elétrica laranja enrolada" },
-  ];
-
-  // Pix BR Code (EMV) estático com valor
-  const tlv = (id, v) => id + String(v.length).padStart(2, "0") + v;
-  const crc16 = (s) => {
-    let crc = 0xFFFF;
-    for (let i = 0; i < s.length; i++) {
-      crc ^= s.charCodeAt(i) << 8;
-      for (let j = 0; j < 8; j++) crc = crc & 0x8000 ? ((crc << 1) ^ 0x1021) & 0xFFFF : (crc << 1) & 0xFFFF;
+      trilho.style.transform = "translateX(-" + (slideAtual * 100) + "%)";
+      pontos.forEach(function(p) { p.classList.remove("ativo"); });
+      pontos[slideAtual].classList.add("ativo");
     }
-    return crc.toString(16).toUpperCase().padStart(4, "0");
-  };
-  const pixPayload = (amount) => {
-    const body =
-      tlv("00", "01") +
-      tlv("26", tlv("00", "br.gov.bcb.pix") + tlv("01", PIX_KEY)) +
-      tlv("52", "0000") + tlv("53", "986") +
-      (amount > 0 ? tlv("54", amount.toFixed(2)) : "") +
-      tlv("58", "BR") + tlv("59", PIX_NAME.slice(0, 25)) + tlv("60", PIX_CITY.slice(0, 15)) +
-      tlv("62", tlv("05", "***")) + "6304";
-    return body + crc16(body);
-  };
 
-  const toast = $("toast");
-  let toastTimer;
-  const copyText = async (text, msg) => {
-    try { await navigator.clipboard.writeText(text); }
-    catch {
-      const t = document.createElement("textarea");
-      t.value = text; document.body.appendChild(t); t.select(); document.execCommand("copy"); t.remove();
+    function mudarSlide(direcao) {
+      mostrarSlide(slideAtual + direcao);
     }
-    toast.textContent = msg; toast.classList.add("show");
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => toast.classList.remove("show"), 3000);
-  };
 
-  const pixIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="m12 3 9 9-9 9-9-9z"/></svg>`;
-  const waIcon = `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Z"/></svg>`;
+    function irParaSlide(indice) {
+      mostrarSlide(indice);
+    }
 
-  const card = (p, i) => `
-    <article class="card" data-i="${i}">
-      <div class="card-img">
-        <img src="./img/${p.img}" alt="${p.alt}" loading="lazy" />
-        <span class="tag${p.qr ? " qr" : ""}">${p.label}</span>
-      </div>
-      <div class="card-body">
-        <h3>${p.name}</h3>
-        <div class="price">${p.from ? "<small>a partir de </small>" : ""}${brl(p.price)}</div>
-        <span class="pix-note">no Pix</span>
-        <div class="actions">
-          <button class="btn btn-pix" type="button" data-pix="${i}" aria-label="Pagar ${p.name} com Pix">${pixIcon}Pix</button>
-          <a class="btn btn-whats" href="${wa(`Olá! Quero: ${p.name} (${brl(p.price)}).`)}" target="_blank" rel="noopener" aria-label="Pedir ${p.name} pelo WhatsApp">${waIcon}Pedir</a>
-        </div>
-        <a class="text-link" href="${INFINITEPAY}" target="_blank" rel="noopener">ou pague no cartão</a>
-      </div>
-    </article>`;
+    setInterval(function() {
+      mudarSlide(1);
+    }, 4000);
 
-  document.querySelectorAll("[data-store]").forEach((g) => {
-    g.innerHTML = products.map((p, i) => p.store === g.dataset.store ? card(p, i) : "").join("");
-  });
+    var rodapeAtual = 0;
+    var rodapeSlides = document.querySelectorAll(".rodape-slide");
+    setInterval(function() {
+      rodapeSlides[rodapeAtual].classList.remove("ativo");
+      rodapeAtual = (rodapeAtual + 1) % rodapeSlides.length;
+      rodapeSlides[rodapeAtual].classList.add("ativo");
+    }, 3500);
 
-  document.querySelectorAll("[data-wa]").forEach((a) => { a.href = wa(a.dataset.wa); a.target = "_blank"; a.rel = "noopener"; });
+    function alternarMaisInformacoes() {
+      var caixa = document.getElementById("conteudo-mais-info");
+      var botao = document.getElementById("btn-mais-info");
+      var aberto = caixa.classList.toggle("aberto");
+      botao.innerHTML = aberto ? "MENOS INFORMAÇÕES &#708;" : "MAIS INFORMAÇÕES &#709;";
+    }
 
-  const cats = document.querySelectorAll(".cat");
-  const input = $("q");
-  let currentCat = "all";
+    function alternarLeituraQuemSomos() {
+      var resto = document.getElementById("quem-somos-resto");
+      var botao = document.getElementById("btn-ler-mais-texto");
+      var aberto = resto.classList.toggle("aberto");
+      botao.textContent = aberto ? "Mostrar menos" : "Ler mais";
+    }
 
-  const apply = () => {
-    const q = norm(input.value.trim());
-    let total = 0;
-    document.querySelectorAll(".card").forEach((c) => {
-      const p = products[Number(c.dataset.i)];
-      const show = (currentCat === "all" || p.cat === currentCat) && (!q || norm(`${p.name} ${p.label} ${p.cat}`).includes(q));
-      c.hidden = !show;
-      if (show) total++;
-    });
-    document.querySelectorAll("section").forEach((s) => {
-      s.hidden = !s.querySelector(".card:not([hidden])");
-    });
-    $("empty").hidden = total > 0;
-    $("results").textContent = `${total} produto${total === 1 ? "" : "s"} encontrado${total === 1 ? "" : "s"}`;
-  };
+    function alternarLeituraEntrega() {
+      var resto = document.getElementById("entrega-resto");
+      var botao = document.getElementById("btn-ler-mais-entrega");
+      var aberto = resto.classList.toggle("aberto");
+      botao.textContent = aberto ? "Mostrar menos" : "Leia mais";
+    }
 
-  cats.forEach((b) => b.addEventListener("click", () => {
-    currentCat = b.dataset.filter;
-    cats.forEach((c) => c.setAttribute("aria-pressed", String(c === b)));
-    apply();
-    document.querySelector("section:not([hidden])")?.scrollIntoView({ block: "start" });
-  }));
-  input.addEventListener("input", apply);
+    var freteCalculado = 0;
+    var prazoEstimadoTexto = "3 a 5 dias úteis (produção para personalizados)";
 
-  document.addEventListener("click", (e) => {
-    const b = e.target.closest("[data-pix]");
-    if (!b) return;
-    const p = products[Number(b.dataset.pix)];
-    copyText(pixPayload(p.price), `Pix de ${brl(p.price)} copiado! Cole no app do seu banco.`);
-  });
-</script>
+    function calcularFreteEPrazoPorCep(cepLimpo, uf, localidade) {
+      var prefixo = parseInt(cepLimpo.slice(0, 5), 10);
+      var cidadeNorm = (localidade || "").toLowerCase();
+
+      if (prefixo >= 9900 && prefixo <= 9999 && cidadeNorm.indexOf("diadema") !== -1) {
+        return {
+          valor: 12.00,
+          prazo: "3 a 5 dias úteis (produção) + até 1 dia útil de entrega"
+        };
+      }
+
+      if (prefixo >= 1000 && prefixo <= 9999) {
+        return {
+          valor: 18.00,
+          prazo: "3 a 5 dias úteis (produção) + 1 a 2 dias úteis de entrega"
+        };
+      }
+
+      if (uf === "SP" || (prefixo >= 11000 && prefixo <= 19999)) {
+        return {
+          valor: 24.00,
+          prazo: "3 a 5 dias úteis (produção) + 2 a 4 dias úteis de envio"
+        };
+      }
+
+      if (["RJ", "MG", "ES", "PR", "SC", "RS"].indexOf(uf) !== -1) {
+        return {
+          valor: 32.00,
+          prazo: "3 a 5 dias úteis (produção) + 3 a 6 dias úteis de envio"
+        };
+      }
+
+      return {
+        valor: 42.00,
+        prazo: "3 a 5 dias úteis (produção) + 4 a 8 dias úteis de envio"
+      };
+    }
+
+    function aplicarDadosCep(cepFormatado, dados) {
+      var calculo = calcularFreteEPrazoPorCep(cepFormatado.replace(/\D/g, ""), dados.uf, dados.localidade);
+      freteCalculado = calculo.valor;
+      prazoEstimadoTexto = calculo.prazo;
+
+      var enderecoCompleto =
+        (dados.logradouro || "") + ", Nº  - " + (dados.bairro || "") + ", " + dados.localidade + "/" + dados.uf;
+
+      document.getElementById("cep-topo-input").value = cepFormatado;
+      document.getElementById("texto-cep-topo").innerHTML =
+        "Enviar para <strong>" + dados.localidade + "/" + dados.uf + "</strong> (" + cepFormatado + ") — Frete: <strong>" + formatarReal(freteCalculado) + "</strong>";
+
+      var resultadoTopo = document.getElementById("resultado-cep-topo");
+      resultadoTopo.style.display = "block";
+      resultadoTopo.textContent = "Prazo estimado: " + prazoEstimadoTexto + ".";
+
+      document.getElementById("cep-cliente").value = cepFormatado;
+      document.getElementById("endereco-cliente").value = enderecoCompleto;
+      document.getElementById("tipo-entrega").value = "Entrega / Envio";
+      document.getElementById("status-cep").textContent =
+        "Frete: " + formatarReal(freteCalculado) + " | Prazo: " + prazoEstimadoTexto + ".";
+      atualizarResumo();
+    }
+
+    function consultarCepTopo() {
+      var inputTopo = document.getElementById("cep-topo-input");
+      var cep = inputTopo.value.replace(/\D/g, "");
+      var resultadoTopo = document.getElementById("resultado-cep-topo");
+
+      if (cep.length !== 8) {
+        resultadoTopo.style.display = "block";
+        resultadoTopo.textContent = "Digite um CEP válido com 8 números (ex: 09900-000).";
+        return;
+      }
+
+      var cepFormatado = cep.slice(0, 5) + "-" + cep.slice(5);
+      resultadoTopo.style.display = "block";
+      resultadoTopo.textContent = "Calculando frete e prazo para " + cepFormatado + "...";
+
+      fetch("https://viacep.com.br/ws/" + cep + "/json/")
+        .then(function(r) { return r.json(); })
+        .then(function(dados) {
+          if (dados.erro) {
+            resultadoTopo.textContent = "CEP não encontrado. Confira os números digitados.";
+          } else {
+            aplicarDadosCep(cepFormatado, dados);
+          }
+        })
+        .catch(function() {
+          resultadoTopo.textContent = "Não foi possível consultar agora. Você pode informar no carrinho.";
+        });
+    }
+
+    var carrinho = [];
+    var pedidoAtual = null;
+
+    function formatarReal(valor) {
+      return "R$ " + valor.toFixed(2).replace(".", ",");
+    }
+
+    function adicionarAoCarrinho(nome, preco) {
+      document.getElementById("titulo-aba-compra").textContent = "Comprar — " + nome;
+      var existente = carrinho.find(function(item) { return item.nome === nome; });
+      if (existente) {
+        existente.qtd += 1;
+      } else {
+        carrinho.push({ nome: nome, preco: preco, qtd: 1 });
+      }
+      atualizarResumo();
+      abrirCarrinho();
+    }
+
+    function alterarQtd(index, delta) {
+      carrinho[index].qtd += delta;
+      if (carrinho[index].qtd <= 0) {
+        carrinho.splice(index, 1);
+      }
+      atualizarResumo();
+    }
+
+    function consultarCep() {
+      var cep = document.getElementById("cep-cliente").value.replace(/\D/g, "");
+      var status = document.getElementById("status-cep");
+      if (cep.length !== 8) {
+        status.textContent = "Informe um CEP válido com 8 números.";
+        return;
+      }
+      var cepFormatado = cep.slice(0, 5) + "-" + cep.slice(5);
+      status.textContent = "Calculando frete e prazo...";
+      fetch("https://viacep.com.br/ws/" + cep + "/json/")
+        .then(function(r) { return r.json(); })
+        .then(function(dados) {
+          if (dados.erro) {
+            status.textContent = "CEP não encontrado.";
+          } else {
+            aplicarDadosCep(cepFormatado, dados);
+          }
+        })
+        .catch(function() {
+          status.textContent = "Preencha o endereço manualmente abaixo.";
+        });
+    }
+
+    function atualizarResumo() {
+      var lista = document.getElementById("lista-itens-carrinho");
+      var contador = document.getElementById("contador-carrinho");
+      lista.innerHTML = "";
+      var totalItens = 0;
+      var subtotal = 0;
+
+      if (carrinho.length === 0) {
+        lista.innerHTML = '<p style="color:#666; font-size:14px;">Seu carrinho está vazio.</p>';
+      } else {
+        carrinho.forEach(function(item, i) {
+          totalItens += item.qtd;
+          subtotal += item.preco * item.qtd;
+          var div = document.createElement("div");
+          div.className = "item-carrinho";
+          div.innerHTML =
+            '<div class="item-info"><strong>' + item.nome + '</strong><span>' + formatarReal(item.preco) + ' cada</span></div>' +
+            '<div class="qtd-controles">' +
+              '<button type="button" onclick="alterarQtd(' + i + ', -1)">-</button>' +
+              '<span>' + item.qtd + '</span>' +
+              '<button type="button" onclick="alterarQtd(' + i + ', 1)">+</button>' +
+            '</div>';
+          lista.appendChild(div);
+        });
+      }
+
+      var tipoEntrega = document.getElementById("tipo-entrega").value;
+      var freteAtual = 0;
+
+      if (tipoEntrega === "Retirada no local") {
+        freteAtual = 0;
+        document.getElementById("valor-frete").textContent = "Grátis";
+      } else {
+        freteAtual = carrinho.length > 0 ? freteCalculado : 0;
+        document.getElementById("valor-frete").textContent = formatarReal(freteAtual);
+      }
+
+      contador.textContent = totalItens;
+      document.getElementById("valor-subtotal").textContent = formatarReal(subtotal);
+      document.getElementById("valor-total").textContent = formatarReal(subtotal + freteAtual);
+    }
+
+    function abrirCarrinho() {
+      document.getElementById("overlay-carrinho").classList.add("ativo");
+    }
+
+    function fecharCarrinho() {
+      document.getElementById("overlay-carrinho").classList.remove("ativo");
+    }
+
+    function validarPedidoAntesDePagar() {
+      if (carrinho.length === 0) {
+        alert("Adicione pelo menos um produto no carrinho.");
+        return null;
+      }
+      var nome = document.getElementById("nome-cliente").value.trim();
+      if (!nome) {
+        alert("Digite seu nome para continuar.");
+        return null;
+      }
+      var subtotal = carrinho.reduce(function(acc, item) { return acc + item.preco * item.qtd; }, 0);
+      var entrega = document.getElementById("tipo-entrega").value;
+      var freteAtual = entrega === "Retirada no local" ? 0 : freteCalculado;
+      var total = subtotal + freteAtual;
+
+      if (total <= 0) {
+        alert("O valor total do pedido está R$ 0,00. Defina um valor no produto antes de pagar.");
+        return null;
+      }
+
+      pedidoAtual = {
+        nome: nome,
+        whats: document.getElementById("whats-cliente").value.trim(),
+        cep: document.getElementById("cep-cliente").value.trim(),
+        endereco: document.getElementById("endereco-cliente").value.trim(),
+        detalhes: document.getElementById("detalhes-cliente").value.trim(),
+        entrega: entrega,
+        frete: freteAtual,
+        subtotal: subtotal,
+        total: total,
+        itens: carrinho.map(function(i) { return i.qtd + "x " + i.nome + " (" + formatarReal(i.preco * i.qtd) + ")"; }).join(", "),
+        numeroPedido: "N5-" + String(Date.now()).slice(-5)
+      };
+
+      return pedidoAtual;
+    }
+
+    function pagarComCartaoCredito() {
+      var dados = validarPedidoAntesDePagar();
+      if (!dados) return;
+
+      var urlBase = window.location.href.split("?")[0];
+      var sep = LINK_CARTAO_MERCADO_PAGO.indexOf("?") === -1 ? "?" : "&";
+      var urlCartao = LINK_CARTAO_MERCADO_PAGO + sep +
+        "pedido=" + encodeURIComponent(dados.numeroPedido) +
+        "&metodo=cartao_credito" +
+        "&back_url=" + encodeURIComponent(urlBase + "?pagamento=cartao_credito&pedido=" + encodeURIComponent(dados.numeroPedido));
+
+      window.open(urlCartao, "_blank", "noopener,noreferrer");
+    }
+
+    function pagarComPix() {
+      var dados = validarPedidoAntesDePagar();
+      if (!dados) return;
+
+      var boxPix = document.getElementById("box-pix-pagamento");
+      document.getElementById("info-pix-valor").textContent =
+        "Pedido " + dados.numeroPedido + " — Valor: " + formatarReal(dados.total) + " (" + NOME_RECEBEDOR_PIX + ")";
+      document.getElementById("codigo-pix-copia-cola").textContent =
+        CHAVE_PIX_LOJA || "Chave Pix ainda não configurada";
+      boxPix.classList.add("ativo");
+      boxPix.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+
+    function copiarPix() {
+      var codigo = document.getElementById("codigo-pix-copia-cola").textContent.trim();
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(codigo).then(function() {
+          alert("Chave / Código Pix copiado!");
+        }).catch(function() {
+          alert("Chave Pix: " + codigo);
+        });
+      } else {
+        alert("Chave Pix: " + codigo);
+      }
+    }
+
+    function enviarPedidoPix() {
+      var dados = pedidoAtual || validarPedidoAntesDePagar();
+      if (!dados) return;
+
+      var resumo =
+        "Pedido: " + dados.numeroPedido +
+        "\nPagamento: Pix (aguardando conferência no banco)" +
+        "\nCliente: " + dados.nome +
+        (dados.whats ? "\nWhatsApp: " + dados.whats : "") +
+        "\nItens: " + dados.itens +
+        "\nEntrega: " + dados.entrega + " (" + formatarReal(dados.frete) + ")" +
+        (dados.cep ? "\nCEP: " + dados.cep : "") +
+        (dados.endereco ? "\nEndereço: " + dados.endereco : "") +
+        "\nTotal: " + formatarReal(dados.total) +
+        (dados.detalhes ? "\nDetalhes: " + dados.detalhes : "");
+
+      var box = document.getElementById("box-retorno-pagamento");
+      box.textContent = "Dados do pedido registrados na tela para conferência:\n" + resumo;
+      box.style.display = "block";
+
+      if (WHATSAPP_LOJA) {
+        var numeroLimpo = WHATSAPP_LOJA.replace(/\D/g, "");
+        window.open("https://wa.me/" + numeroLimpo + "?text=" + encodeURIComponent(resumo), "_blank", "noopener,noreferrer");
+      }
+    }
+
+    function verificarRetornoPagamento() {
+      var params = new URLSearchParams(window.location.search);
+      var retorno = params.get("pagamento");
+      var pedido = params.get("pedido") || "";
+      var box = document.getElementById("box-retorno-pagamento");
+
+      if (retorno || pedido) {
+        var texto = "Retorno de pagamento recebido.";
+        if (retorno) texto += "\nMeio: " + retorno;
+        if (pedido) texto += "\nPedido: " + pedido;
+        box.textContent = texto;
+        box.style.display = "block";
+        abrirCarrinho();
+      }
+    }
+
+    verificarRetornoPagamento();
+  </script>
 </body>
 </html>
