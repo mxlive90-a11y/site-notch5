@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NOTCH5 STUDIO CRIATIVO — Vitrine</title>
   <style>
+    html { scroll-behavior: smooth; }
     body { font-family: Arial, sans-serif; margin: 0; background: #f4f4f4; color: #222; }
     header { background: #111; color: #fff; padding: 30px 20px; text-align: center; position: relative; }
     .btn-carrinho-topo { position: fixed; top: 16px; right: 16px; z-index: 900; background: #0a7; color: #fff; border: none; padding: 11px 16px; border-radius: 8px; font-weight: bold; font-size: 14px; cursor: pointer; box-shadow: 0 3px 10px rgba(0,0,0,0.25); }
@@ -53,10 +54,13 @@
       .slide-destaque-img { width: 105px; height: 105px; }
     }
 
-    /* Vitrine com 8 produtos e botão Comprar dentro de cada card */
+    /* Seções e vitrine */
+    .secao-categoria { margin-top: 28px; scroll-margin-top: 20px; }
+    .secao-categoria:first-child { margin-top: 0; }
+    .secao-titulo { margin: 0 0 14px; font-size: 20px; color: #111; border-left: 4px solid #0033c6; padding-left: 10px; }
     .vitrine { display: grid; grid-template-columns: repeat(auto-fit, minmax(215px, 1fr)); gap: 18px; }
     .produto { background: #fff; border-radius: 10px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); display: flex; flex-direction: column; justify-content: space-between; }
-    .produto-img-box { width: 100%; height: 155px; border-radius: 8px; background: #e9e9e9; overflow: hidden; margin-bottom: 12px; display: flex; align-items: center; justify-content: center; color: #666; font-size: 13px; font-weight: bold; }
+    .produto-img-box { width: 100%; height: 155px; border-radius: 8px; background: #e9e9e9; overflow: hidden; margin-bottom: 12px; display: flex; align-items: center; justify-content: center; color: #666; font-size: 13px; font-weight: bold; position: relative; }
     .produto-img-box img { width: 100%; height: 100%; object-fit: cover; display: block; }
     .produto h3 { margin: 0 0 8px; font-size: 17px; }
     .produto p { margin: 0 0 12px; color: #555; font-size: 13.5px; line-height: 1.4; }
@@ -100,7 +104,24 @@
     .bloco-checkout { background: #f8f8f8; border: 1px solid #e2e2e2; border-radius: 8px; padding: 14px; margin-top: 14px; }
     .bloco-checkout h3 { margin: 0 0 10px; font-size: 15px; }
     .campo { width: 100%; padding: 9px 10px; margin-bottom: 8px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; box-sizing: border-box; font-family: Arial, sans-serif; }
-    textarea.campo { resize: vertical; min-height: 76px; margin-bottom: 0; }
+    .anexo-checkout-box { display: none; margin-top: 12px; padding-top: 10px; border-top: 1px dashed #cbd5e1; }
+    .anexo-checkout-box.visivel { display: block; }
+    .anexo-checkout-box label { display: block; font-weight: bold; font-size: 14px; color: #111; margin-bottom: 4px; }
+    .anexo-checkout-box p { font-size: 12.5px; color: #555; margin: 0 0 8px 0; line-height: 1.4; }
+    .anexo-checkout-box input[type="file"] { width: 100%; font-size: 13px; background: #fff; border: 1px solid #ccc; border-radius: 6px; padding: 7px; box-sizing: border-box; }
+    .status-anexo-checkout { font-size: 12.5px; color: #0a7; font-weight: bold; margin-top: 6px; }
+
+    /* Player de vídeo alinhado com ID, Nome e Descrição do item */
+    .video-checkout-box { display: none; width: 100%; box-sizing: border-box; background: #f8f8f8; border: 1px solid #e2e2e2; border-radius: 8px; padding: 14px; margin: 14px 0 0; }
+    .video-checkout-box.visivel { display: block; }
+    .video-ficha-item { background: #fff; border: 1px solid #e5e7eb; border-radius: 6px; padding: 10px 12px; margin-bottom: 10px; text-align: left; }
+    .video-ficha-linha { font-size: 13px; line-height: 1.45; color: #333; margin: 0 0 4px; }
+    .video-ficha-linha:last-child { margin-bottom: 0; }
+    .video-ficha-linha strong { color: #111; }
+    .video-checkout-titulo { font-size: 14px; font-weight: bold; color: #111; margin: 0 0 10px; text-align: left; }
+    .video-checkout-frame-wrap { position: relative; width: 100%; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; background: #111; margin: 0 auto; }
+    .video-checkout-frame-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block; }
+
     .linha-cep { display: flex; gap: 8px; margin-bottom: 8px; }
     .linha-cep input { flex: 1; margin-bottom: 0; }
     .btn-cep { background: #111; color: #fff; border: none; padding: 0 14px; border-radius: 6px; font-weight: bold; cursor: pointer; }
@@ -110,8 +131,9 @@
 
     /* Botões de pagamento no final */
     .grupo-pagamentos { display: flex; flex-direction: column; gap: 10px; margin-top: 14px; }
-    .btn-pag-cartao { width: 100%; background: #009ee3; color: #fff; border: none; padding: 13px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; }
-    .btn-pag-cartao:hover { background: #007eb5; }
+    .btn-pag-mercadopago { width: 100%; background: #009ee3; color: #fff; border: none; padding: 13px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; }
+    .btn-pag-mercadopago:hover { background: #007eb5; }
+    .btn-pag-mercadopago:disabled { opacity: 0.65; cursor: wait; }
     .btn-pag-pix { width: 100%; background: #111827; color: #fff; border: none; padding: 13px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; }
     .btn-pag-pix:hover { background: #0a7; }
 
@@ -159,7 +181,7 @@
               <span class="slide-tag">Linha Personalizada</span>
               <h3>Sublimação &amp; Brindes</h3>
               <p>Arte exclusiva e acabamento profissional para você ou sua empresa.</p>
-              <a class="slide-btn" href="#vitrine-produtos">Confira</a>
+              <a class="slide-btn" href="#secao-sublimacao" onclick="rolarParaSecao(event, 'secao-sublimacao')">Confira</a>
             </div>
             <img class="slide-destaque-img" src="item-1.jpg" alt="Sublimação" onerror="this.style.display='none'">
           </div>
@@ -170,7 +192,7 @@
               <span class="slide-tag">Atendimento Rápido</span>
               <h3>Serviços de Elétrica</h3>
               <p>Instalações e manutenções residenciais e comerciais com segurança.</p>
-              <a class="slide-btn" href="#vitrine-produtos">Confira</a>
+              <a class="slide-btn" href="#secao-eletrica" onclick="rolarParaSecao(event, 'secao-eletrica')">Confira</a>
             </div>
             <img class="slide-destaque-img" src="item-2.jpg" alt="Elétrica" onerror="this.style.display='none'">
           </div>
@@ -181,7 +203,7 @@
               <span class="slide-tag">Viagens &amp; Roteiros</span>
               <h3>Turismo &amp; Excursões</h3>
               <p>Pacotes organizados para você viajar com conforto e tranquilidade.</p>
-              <a class="slide-btn" href="#vitrine-produtos">Confira</a>
+              <a class="slide-btn" href="#secao-turismo" onclick="rolarParaSecao(event, 'secao-turismo')">Confira</a>
             </div>
             <img class="slide-destaque-img" src="item-3.jpg" alt="Turismo" onerror="this.style.display='none'">
           </div>
@@ -199,106 +221,8 @@
       </div>
     </div>
 
-    <!-- 8 produtos na vitrine com botão Comprar dentro de cada card -->
-    <div class="vitrine" id="vitrine-produtos">
-
-      <div class="produto">
-        <div>
-          <div class="produto-img-box"><span>Foto em breve</span></div>
-          <h3>Adesivo em Vinil Sublimático</h3>
-          <p>Acabamento resistente para personalização e kits.</p>
-        </div>
-        <div>
-          <div class="preco">R$ 15,00</div>
-          <button class="btn-comprar" type="button" onclick="adicionarAoCarrinho('Adesivo em Vinil Sublimático', 15.00)">Comprar</button>
-        </div>
-      </div>
-
-      <div class="produto">
-        <div>
-          <div class="produto-img-box"><span>Foto em breve</span></div>
-          <h3>Cartela de Adesivos</h3>
-          <p>Arte personalizada pronta para aplicação e divulgação.</p>
-        </div>
-        <div>
-          <div class="preco">R$ 25,00</div>
-          <button class="btn-comprar" type="button" onclick="adicionarAoCarrinho('Cartela de Adesivos', 25.00)">Comprar</button>
-        </div>
-      </div>
-
-      <div class="produto">
-        <div>
-          <div class="produto-img-box"><img src="item-1.jpg" alt="Produto 3" onerror="this.style.display='none'; this.parentNode.textContent='Sem foto'"></div>
-          <h3>Produto 3</h3>
-          <p>Descrição curta do produto 3.</p>
-        </div>
-        <div>
-          <div class="preco">R$ 0,00</div>
-          <button class="btn-comprar" type="button" onclick="adicionarAoCarrinho('Produto 3', 0.00)">Comprar</button>
-        </div>
-      </div>
-
-      <div class="produto">
-        <div>
-          <div class="produto-img-box"><img src="item-2.jpg" alt="Produto 4" onerror="this.style.display='none'; this.parentNode.textContent='Sem foto'"></div>
-          <h3>Produto 4</h3>
-          <p>Descrição curta do produto 4.</p>
-        </div>
-        <div>
-          <div class="preco">R$ 0,00</div>
-          <button class="btn-comprar" type="button" onclick="adicionarAoCarrinho('Produto 4', 0.00)">Comprar</button>
-        </div>
-      </div>
-
-      <div class="produto">
-        <div>
-          <div class="produto-img-box"><img src="item-3.jpg" alt="Produto 5" onerror="this.style.display='none'; this.parentNode.textContent='Sem foto'"></div>
-          <h3>Produto 5</h3>
-          <p>Descrição curta do produto 5.</p>
-        </div>
-        <div>
-          <div class="preco">R$ 0,00</div>
-          <button class="btn-comprar" type="button" onclick="adicionarAoCarrinho('Produto 5', 0.00)">Comprar</button>
-        </div>
-      </div>
-
-      <div class="produto">
-        <div>
-          <div class="produto-img-box"><img src="item-4.jpg" alt="Produto 6" onerror="this.style.display='none'; this.parentNode.textContent='Sem foto'"></div>
-          <h3>Produto 6</h3>
-          <p>Descrição curta do produto 6.</p>
-        </div>
-        <div>
-          <div class="preco">R$ 0,00</div>
-          <button class="btn-comprar" type="button" onclick="adicionarAoCarrinho('Produto 6', 0.00)">Comprar</button>
-        </div>
-      </div>
-
-      <div class="produto">
-        <div>
-          <div class="produto-img-box"><img src="item-5.jpg" alt="Produto 7" onerror="this.style.display='none'; this.parentNode.textContent='Sem foto'"></div>
-          <h3>Produto 7</h3>
-          <p>Descrição curta do produto 7.</p>
-        </div>
-        <div>
-          <div class="preco">R$ 0,00</div>
-          <button class="btn-comprar" type="button" onclick="adicionarAoCarrinho('Produto 7', 0.00)">Comprar</button>
-        </div>
-      </div>
-
-      <div class="produto">
-        <div>
-          <div class="produto-img-box"><img src="item-6.jpg" alt="Produto 8" onerror="this.style.display='none'; this.parentNode.textContent='Sem foto'"></div>
-          <h3>Produto 8</h3>
-          <p>Descrição curta do produto 8.</p>
-        </div>
-        <div>
-          <div class="preco">R$ 0,00</div>
-          <button class="btn-comprar" type="button" onclick="adicionarAoCarrinho('Produto 8', 0.00)">Comprar</button>
-        </div>
-      </div>
-
-    </div>
+    <!-- As seções e vitrines são preenchidas automaticamente pelo catálogo logo abaixo -->
+    <div id="vitrine-produtos"></div>
 
     <div class="info-sanfona-box">
       <div class="info-conteudo-expansivel" id="conteudo-mais-info">
@@ -338,7 +262,7 @@
   <footer>
     <p class="rodape-slide ativo">NOTCH5 STUDIO CRIATIVO — Todos os direitos reservados</p>
     <p class="rodape-slide">SUBLIMAÇÃO • PERSONALIZAÇÃO • ELÉTRICA • TURISMO</p>
-    <p class="rodape-slide">Pagamento via Cartão de Crédito e Pix</p>
+    <p class="rodape-slide">Pagamento via Mercado Pago e Pix</p>
   </footer>
 
   <!-- Aba / Janela de Compra centralizada -->
@@ -368,10 +292,36 @@
           </div>
 
           <div class="bloco-checkout">
-            <h3>2. Seus Dados e Detalhes</h3>
+            <h3>2. Seus Dados</h3>
             <input class="campo" type="text" id="nome-cliente" placeholder="Seu nome completo">
             <input class="campo" type="tel" id="whats-cliente" placeholder="Seu WhatsApp com DDD">
-            <textarea class="campo" id="detalhes-cliente" placeholder="Detalhes do pedido (medida, arte/adesivo, cor, quantidade ou observação)"></textarea>
+
+            <!-- Escondido por padrão; aparece apenas quando o item clicado permite anexo -->
+            <div class="anexo-checkout-box" id="box-anexo-arte">
+              <label for="anexo-arte-checkout">Anexar foto ou arte:</label>
+              <p>Envie aqui a imagem ou logo do seu pedido. Ajustamos o tamanho e a montagem para produção.</p>
+              <input type="file" id="anexo-arte-checkout" accept="image/*,.pdf" onchange="selecionarArteCheckout(this)">
+              <div class="status-anexo-checkout" id="status-anexo-checkout"></div>
+            </div>
+          </div>
+
+          <!-- Vídeo alinhado com ID, Nome e Descrição (itens 01 a 12 quando videoId estiver preenchido) -->
+          <div class="video-checkout-box" id="box-video-produto">
+            <p class="video-checkout-titulo">Vídeo do produto:</p>
+            <div class="video-ficha-item">
+              <p class="video-ficha-linha"><strong>ID:</strong> <span id="video-item-id"></span></p>
+              <p class="video-ficha-linha"><strong>Nome:</strong> <span id="video-item-nome"></span></p>
+              <p class="video-ficha-linha"><strong>Descrição:</strong> <span id="video-item-descricao"></span></p>
+            </div>
+            <div class="video-checkout-frame-wrap">
+              <iframe
+                id="player-video-produto"
+                src=""
+                title="Demonstração do produto"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+              </iframe>
+            </div>
           </div>
         </div>
 
@@ -396,7 +346,7 @@
 
         <!-- Opções de pagamento direto na vitrine -->
         <div class="grupo-pagamentos">
-          <button class="btn-pag-cartao" type="button" onclick="pagarComCartaoCredito()">Pagar com Cartão de Crédito</button>
+          <button class="btn-pag-mercadopago" id="btn-mp-checkout" type="button" onclick="pagarComMercadoPago()">Pagar com Mercado Pago</button>
           <button class="btn-pag-pix" type="button" onclick="pagarComPix()">Pagar com Pix</button>
         </div>
       </div>
@@ -404,11 +354,396 @@
   </div>
 
   <script>
+    // ============================================================
+    // CATÁLOGO DE VENDAS - NOTCH5 STUDIO CRIATIVO (12 ITENS)
+    // Dica: aperte Ctrl + F e digite "ITEM 01" até "ITEM 12"
+    // IMPORTANTE: No campo preco, use ponto (ex: 39.90) sem R$
+    // ITENS 01 a 04: Sublimação e Brindes (exigeArte: true)
+    // ITENS 05 a 08: Serviços de Elétrica
+    // ITENS 09 a 12: Turismo e Excursões
+    // ============================================================
+
+    var secoesCatalogo = [
+      { id: "secao-sublimacao", titulo: "Sublimação e Brindes" },
+      { id: "secao-eletrica", titulo: "Serviços de Elétrica" },
+      { id: "secao-turismo", titulo: "Turismo e Excursões" }
+    ];
+
+    var catalogoNotch5 = [
+      // ======================== ITEM 01 ========================
+      {
+        id: "01",
+        secao: "secao-sublimacao",
+        nome: "Produto 1",
+        descricao: "Descrição curta do produto 1.",
+        preco: 15.00,
+        imagem: "item-1.jpg",
+        exigeArte: true,
+        videoId: ""
+      },
+
+      // ======================== ITEM 02 ========================
+      {
+        id: "02",
+        secao: "secao-sublimacao",
+        nome: "Produto 2",
+        descricao: "Descrição curta do produto 2.",
+        preco: 25.00,
+        imagem: "item-2.jpg",
+        exigeArte: true,
+        videoId: ""
+      },
+
+      // ======================== ITEM 03 ========================
+      {
+        id: "03",
+        secao: "secao-sublimacao",
+        nome: "Produto 3",
+        descricao: "Descrição curta do produto 3.",
+        preco: 0.00,
+        imagem: "03.jpg",
+        exigeArte: true,
+        videoId: ""
+      },
+
+      // ======================== ITEM 04 ========================
+      {
+        id: "04",
+        secao: "secao-sublimacao",
+        nome: "Produto 4",
+        descricao: "Descrição curta do produto 4.",
+        preco: 0.00,
+        imagem: "04.jpg",
+        exigeArte: true,
+        videoId: ""
+      },
+
+      // ======================== ITEM 05 ========================
+      {
+        id: "05",
+        secao: "secao-eletrica",
+        nome: "Produto 5",
+        descricao: "Descrição curta do produto 5.",
+        preco: 0.00,
+        imagem: "05.jpg",
+        exigeArte: true,
+        videoId: ""
+      },
+
+      // ======================== ITEM 06 ========================
+      {
+        id: "06",
+        secao: "secao-eletrica",
+        nome: "Produto 6",
+        descricao: "Descrição curta do produto 6.",
+        preco: 0.00,
+        imagem: "06.jpg",
+        exigeArte: false,
+        videoId: ""
+      },
+
+      // ======================== ITEM 07 ========================
+      {
+        id: "07",
+        secao: "secao-eletrica",
+        nome: "Produto 7",
+        descricao: "Descrição curta do produto 7.",
+        preco: 0.00,
+        imagem: "07.jpg",
+        exigeArte: false,
+        videoId: ""
+      },
+
+      // ======================== ITEM 08 ========================
+      {
+        id: "08",
+        secao: "secao-eletrica",
+        nome: "Produto 8",
+        descricao: "Descrição curta do produto 8.",
+        preco: 0.00,
+        imagem: "08.jpg",
+        exigeArte: false,
+        videoId: ""
+      },
+
+      // ======================== ITEM 09 ========================
+      {
+        id: "09",
+        secao: "secao-turismo",
+        nome: "Produto 9",
+        descricao: "Descrição curta do produto 9.",
+        preco: 0.00,
+        imagem: "09.jpg",
+        exigeArte: false,
+        videoId: ""
+      },
+
+      // ======================== ITEM 10 ========================
+      {
+        id: "10",
+        secao: "secao-turismo",
+        nome: "Produto 10",
+        descricao: "Descrição curta do produto 10.",
+        preco: 0.00,
+        imagem: "10.jpg",
+        exigeArte: false,
+        videoId: ""
+      },
+
+      // ======================== ITEM 11 ========================
+      {
+        id: "11",
+        secao: "secao-turismo",
+        nome: "Produto 11",
+        descricao: "Descrição curta do produto 11.",
+        preco: 0.00,
+        imagem: "11.jpg",
+        exigeArte: false,
+        videoId: ""
+      },
+
+      // ======================== ITEM 12 ========================
+      {
+        id: "12",
+        secao: "secao-turismo",
+        nome: "Produto 12",
+        descricao: "Descrição curta do produto 12.",
+        preco: 1.99,
+        imagem: "12.jpg",
+        exigeArte: false,
+        videoId: ""
+      }
+    ];
+
     // Links e dados de pagamento
-    var LINK_CARTAO_MERCADO_PAGO = "https://link.mercadopago.com.br/andersonalvesdarocha";
+    var LINK_MERCADO_PAGO = "https://link.mercadopago.com.br/andersonalvesdarocha";
+    var FORMSPREE_ENDPOINT = "https://formspree.io/f/SEU_ID_AQUI"; // Cole aqui o link do seu Formspree
     var CHAVE_PIX_LOJA = "11971416225";
     var NOME_RECEBEDOR_PIX = "Anderson Alves da Rocha";
     var WHATSAPP_LOJA = ""; // Opcional: coloque seu numero com DDD, ex: "5511999999999"
+
+    // Duração em milissegundos da rolagem suave ao clicar em "Confira" (ajuste aqui se quiser mais lento/rápido)
+    var DURACAO_ROLAGEM_MS = 1100;
+
+    var arteCheckoutArquivo = null;
+    var ultimoItemPermiteArte = false;
+    var ultimoVideoAtivo = null;
+
+    function formatarReal(valor) {
+      return "R$ " + Number(valor || 0).toFixed(2).replace(".", ",");
+    }
+
+    function rolarParaSecao(event, idSecao) {
+      if (event) event.preventDefault();
+      var alvo = document.getElementById(idSecao);
+      if (!alvo) return;
+
+      var offsetTopo = 20;
+      var destinoY = alvo.getBoundingClientRect().top + window.scrollY - offsetTopo;
+      var inicioY = window.scrollY;
+      var distancia = destinoY - inicioY;
+      var inicioTempo = null;
+
+      function animarPasso(timestamp) {
+        if (!inicioTempo) inicioTempo = timestamp;
+        var decorrido = timestamp - inicioTempo;
+        var progresso = Math.min(decorrido / DURACAO_ROLAGEM_MS, 1);
+        // Desaceleração suave na chegada
+        var ease = 1 - Math.pow(1 - progresso, 3);
+        window.scrollTo(0, inicioY + distancia * ease);
+        if (decorrido < DURACAO_ROLAGEM_MS) {
+          requestAnimationFrame(animarPasso);
+        }
+      }
+
+      requestAnimationFrame(animarPasso);
+    }
+
+    // Monta as seções e os 12 cards automaticamente lendo o catálogo acima
+    function renderizarVitrine() {
+      var container = document.getElementById("vitrine-produtos");
+      if (!container) return;
+      container.innerHTML = "";
+
+      secoesCatalogo.forEach(function(secao) {
+        var itensDaSecao = catalogoNotch5.filter(function(item) {
+          return item.secao === secao.id;
+        });
+
+        var blocoSecao = document.createElement("section");
+        blocoSecao.className = "secao-categoria";
+        blocoSecao.id = secao.id;
+
+        var tituloSecao = document.createElement("h3");
+        tituloSecao.className = "secao-titulo";
+        tituloSecao.textContent = secao.titulo;
+
+        var grade = document.createElement("div");
+        grade.className = "vitrine";
+
+        itensDaSecao.forEach(function(item) {
+          var indiceGlobal = catalogoNotch5.indexOf(item);
+          var numeroOrdem = indiceGlobal + 1;
+          var precoNum = Number(item.preco) || 0;
+          var itemIdStr = item.id || String(numeroOrdem).padStart(2, "0");
+          var itemNomeStr = item.nome || "Produto";
+          var itemDescStr = item.descricao || "";
+          var pedeArte = item.exigeArte !== false && numeroOrdem <= 5;
+          var vidId = (item.videoId || "").trim();
+
+          var card = document.createElement("div");
+          card.className = "produto";
+          card.setAttribute("data-card-index", itemIdStr);
+
+          var topoCard = document.createElement("div");
+
+          var imgBox = document.createElement("div");
+          imgBox.className = "produto-img-box";
+
+          var img = document.createElement("img");
+          img.src = item.imagem || "";
+          img.alt = itemNomeStr;
+          img.onerror = function() { this.style.display = "none"; };
+          imgBox.appendChild(img);
+
+          var titulo = document.createElement("h3");
+          titulo.textContent = itemNomeStr;
+
+          var desc = document.createElement("p");
+          desc.textContent = itemDescStr;
+
+          topoCard.appendChild(imgBox);
+          topoCard.appendChild(titulo);
+          topoCard.appendChild(desc);
+
+          var baseCard = document.createElement("div");
+
+          var precoEl = document.createElement("div");
+          precoEl.className = "preco";
+          precoEl.textContent = formatarReal(precoNum);
+
+          var btnComprar = document.createElement("button");
+          btnComprar.className = "btn-comprar";
+          btnComprar.type = "button";
+          btnComprar.textContent = "Comprar";
+          btnComprar.onclick = function() {
+            adicionarAoCarrinho(itemNomeStr, precoNum, pedeArte, {
+              id: itemIdStr,
+              nome: itemNomeStr,
+              descricao: itemDescStr,
+              videoId: vidId
+            });
+          };
+
+          baseCard.appendChild(precoEl);
+          baseCard.appendChild(btnComprar);
+
+          card.appendChild(topoCard);
+          card.appendChild(baseCard);
+          grade.appendChild(card);
+        });
+
+        blocoSecao.appendChild(tituloSecao);
+        blocoSecao.appendChild(grade);
+        container.appendChild(blocoSecao);
+      });
+    }
+
+    renderizarVitrine();
+
+    function limparAnexoArte() {
+      arteCheckoutArquivo = null;
+      var inputArquivo = document.getElementById("anexo-arte-checkout");
+      var statusEl = document.getElementById("status-anexo-checkout");
+      if (inputArquivo) inputArquivo.value = "";
+      if (statusEl) statusEl.textContent = "";
+    }
+
+    function atualizarVisibilidadeAnexoEVideo() {
+      var boxAnexo = document.getElementById("box-anexo-arte");
+      var boxVideo = document.getElementById("box-video-produto");
+      var playerVideo = document.getElementById("player-video-produto");
+      var elId = document.getElementById("video-item-id");
+      var elNome = document.getElementById("video-item-nome");
+      var elDesc = document.getElementById("video-item-descricao");
+
+      var mostrarAnexo = ultimoItemPermiteArte && carrinho.some(function(item) { return item.exigeArte !== false; });
+
+      if (boxAnexo) {
+        if (mostrarAnexo) {
+          boxAnexo.classList.add("visivel");
+          boxAnexo.style.display = "block";
+        } else {
+          boxAnexo.classList.remove("visivel");
+          boxAnexo.style.display = "none";
+          limparAnexoArte();
+        }
+      }
+
+      if (boxVideo && playerVideo) {
+        var vid = ultimoVideoAtivo && ultimoVideoAtivo.videoId ? ultimoVideoAtivo.videoId.trim() : "";
+        if (carrinho.length > 0 && vid) {
+          if (elId) elId.textContent = ultimoVideoAtivo.id || "";
+          if (elNome) elNome.textContent = ultimoVideoAtivo.nome || "";
+          if (elDesc) elDesc.textContent = ultimoVideoAtivo.descricao || "";
+
+          var embedUrl = "https://www.youtube.com/embed/" + encodeURIComponent(vid);
+          if (playerVideo.src !== embedUrl) {
+            playerVideo.src = embedUrl;
+          }
+          boxVideo.classList.add("visivel");
+          boxVideo.style.display = "block";
+        } else {
+          playerVideo.src = "";
+          boxVideo.classList.remove("visivel");
+          boxVideo.style.display = "none";
+        }
+      }
+    }
+
+    function selecionarArteCheckout(input) {
+      var statusEl = document.getElementById("status-anexo-checkout");
+      if (!input.files || !input.files[0]) {
+        arteCheckoutArquivo = null;
+        statusEl.textContent = "";
+        return;
+      }
+      arteCheckoutArquivo = input.files[0];
+      statusEl.textContent = "Arquivo anexado: " + arteCheckoutArquivo.name;
+    }
+
+    async function enviarDadosEArteFormspree(dados, meioPagamento) {
+      if (!FORMSPREE_ENDPOINT || FORMSPREE_ENDPOINT.indexOf("SEU_ID_AQUI") !== -1) {
+        return true;
+      }
+
+      var formData = new FormData();
+      formData.append("_subject", "Novo Pedido NOTCH5 (" + dados.numeroPedido + ") - " + meioPagamento);
+      formData.append("pedido", dados.numeroPedido);
+      formData.append("meio_pagamento", meioPagamento);
+      formData.append("cliente", dados.nome);
+      formData.append("whatsapp", dados.whats);
+      formData.append("itens", dados.itens);
+      formData.append("entrega", dados.entrega);
+      formData.append("cep", dados.cep);
+      formData.append("endereco", dados.endereco);
+      formData.append("total", formatarReal(dados.total));
+
+      if (arteCheckoutArquivo) {
+        formData.append("anexo_arte_pedido", arteCheckoutArquivo, arteCheckoutArquivo.name);
+      }
+
+      try {
+        var resposta = await fetch(FORMSPREE_ENDPOINT, {
+          method: "POST",
+          body: formData,
+          headers: { "Accept": "application/json" }
+        });
+        return resposta.ok;
+      } catch (erro) {
+        return false;
+      }
+    }
 
     var slideAtual = 0;
     var trilho = document.getElementById("slider-trilho");
@@ -563,18 +898,34 @@
     var carrinho = [];
     var pedidoAtual = null;
 
-    function formatarReal(valor) {
-      return "R$ " + valor.toFixed(2).replace(".", ",");
-    }
+    function adicionarAoCarrinho(nome, preco, exigeArte, infoVideo) {
+      var pedeArte = exigeArte === true;
+      var metaVideo = infoVideo && typeof infoVideo === "object"
+        ? {
+            id: infoVideo.id || "",
+            nome: infoVideo.nome || nome,
+            descricao: infoVideo.descricao || "",
+            videoId: (infoVideo.videoId || "").trim()
+          }
+        : {
+            id: "",
+            nome: nome,
+            descricao: "",
+            videoId: String(infoVideo || "").trim()
+          };
 
-    function adicionarAoCarrinho(nome, preco) {
+      ultimoItemPermiteArte = pedeArte;
+      ultimoVideoAtivo = metaVideo;
       document.getElementById("titulo-aba-compra").textContent = "Comprar — " + nome;
       var existente = carrinho.find(function(item) { return item.nome === nome; });
       if (existente) {
         existente.qtd += 1;
+        existente.exigeArte = pedeArte;
+        existente.metaVideo = metaVideo;
       } else {
-        carrinho.push({ nome: nome, preco: preco, qtd: 1 });
+        carrinho.push({ nome: nome, preco: preco, qtd: 1, exigeArte: pedeArte, metaVideo: metaVideo });
       }
+      atualizarVisibilidadeAnexoEVideo();
       atualizarResumo();
       abrirCarrinho();
     }
@@ -584,6 +935,15 @@
       if (carrinho[index].qtd <= 0) {
         carrinho.splice(index, 1);
       }
+      if (carrinho.length === 0) {
+        ultimoItemPermiteArte = false;
+        ultimoVideoAtivo = null;
+      } else {
+        var ultimo = carrinho[carrinho.length - 1];
+        ultimoItemPermiteArte = ultimo.exigeArte !== false;
+        ultimoVideoAtivo = ultimo.metaVideo || null;
+      }
+      atualizarVisibilidadeAnexoEVideo();
       atualizarResumo();
     }
 
@@ -653,10 +1013,13 @@
     }
 
     function abrirCarrinho() {
+      atualizarVisibilidadeAnexoEVideo();
       document.getElementById("overlay-carrinho").classList.add("ativo");
     }
 
     function fecharCarrinho() {
+      var playerVideo = document.getElementById("player-video-produto");
+      if (playerVideo) playerVideo.src = "";
       document.getElementById("overlay-carrinho").classList.remove("ativo");
     }
 
@@ -685,7 +1048,6 @@
         whats: document.getElementById("whats-cliente").value.trim(),
         cep: document.getElementById("cep-cliente").value.trim(),
         endereco: document.getElementById("endereco-cliente").value.trim(),
-        detalhes: document.getElementById("detalhes-cliente").value.trim(),
         entrega: entrega,
         frete: freteAtual,
         subtotal: subtotal,
@@ -697,18 +1059,30 @@
       return pedidoAtual;
     }
 
-    function pagarComCartaoCredito() {
+    async function pagarComMercadoPago() {
       var dados = validarPedidoAntesDePagar();
       if (!dados) return;
 
-      var urlBase = window.location.href.split("?")[0];
-      var sep = LINK_CARTAO_MERCADO_PAGO.indexOf("?") === -1 ? "?" : "&";
-      var urlCartao = LINK_CARTAO_MERCADO_PAGO + sep +
-        "pedido=" + encodeURIComponent(dados.numeroPedido) +
-        "&metodo=cartao_credito" +
-        "&back_url=" + encodeURIComponent(urlBase + "?pagamento=cartao_credito&pedido=" + encodeURIComponent(dados.numeroPedido));
+      var btnMp = document.getElementById("btn-mp-checkout");
+      btnMp.disabled = true;
+      btnMp.textContent = arteCheckoutArquivo ? "Enviando dados e abrindo Mercado Pago..." : "Abrindo Mercado Pago...";
 
-      window.open(urlCartao, "_blank", "noopener,noreferrer");
+      var enviado = await enviarDadosEArteFormspree(dados, "Mercado Pago");
+      btnMp.disabled = false;
+      btnMp.textContent = "Pagar com Mercado Pago";
+
+      if (!enviado) {
+        alert("Não foi possível enviar os dados pelo Formspree agora. Confira o link do Formspree ou tente novamente.");
+        return;
+      }
+
+      var urlBase = window.location.href.split("?")[0];
+      var sep = LINK_MERCADO_PAGO.indexOf("?") === -1 ? "?" : "&";
+      var urlMp = LINK_MERCADO_PAGO + sep +
+        "pedido=" + encodeURIComponent(dados.numeroPedido) +
+        "&back_url=" + encodeURIComponent(urlBase + "?pagamento=mercadopago&pedido=" + encodeURIComponent(dados.numeroPedido));
+
+      window.open(urlMp, "_blank", "noopener,noreferrer");
     }
 
     function pagarComPix() {
@@ -737,9 +1111,11 @@
       }
     }
 
-    function enviarPedidoPix() {
+    async function enviarPedidoPix() {
       var dados = pedidoAtual || validarPedidoAntesDePagar();
       if (!dados) return;
+
+      await enviarDadosEArteFormspree(dados, "Pix");
 
       var resumo =
         "Pedido: " + dados.numeroPedido +
@@ -747,11 +1123,11 @@
         "\nCliente: " + dados.nome +
         (dados.whats ? "\nWhatsApp: " + dados.whats : "") +
         "\nItens: " + dados.itens +
+        (arteCheckoutArquivo ? "\nImagem anexada: " + arteCheckoutArquivo.name : "") +
         "\nEntrega: " + dados.entrega + " (" + formatarReal(dados.frete) + ")" +
         (dados.cep ? "\nCEP: " + dados.cep : "") +
         (dados.endereco ? "\nEndereço: " + dados.endereco : "") +
-        "\nTotal: " + formatarReal(dados.total) +
-        (dados.detalhes ? "\nDetalhes: " + dados.detalhes : "");
+        "\nTotal: " + formatarReal(dados.total);
 
       var box = document.getElementById("box-retorno-pagamento");
       box.textContent = "Dados do pedido registrados na tela para conferência:\n" + resumo;
